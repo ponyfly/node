@@ -1,0 +1,36 @@
+{
+  "name": "koastudy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-runtime": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "koa": "^2.5.2",
+    "mongoose": "^5.3.15"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "co": "^4.6.0",
+    "cross-env": "^5.2.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "node-fetch": "^2.2.0",
+    "nodemon": "^1.18.4",
+    "rimraf": "^2.6.2"
+  },
+  "scripts": {
+    "dev": "nodemon -w module/src --exec \"babel-node module/src\"",
+    "start": "node src/my-koa-app.js",
+    "build": "rimraf module/dist && babel module/src -w -d module/dist -s",
+    "production": "node module/dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

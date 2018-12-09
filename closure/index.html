@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=750,user-scalable=no">
+  <title>Title</title>
+  <style>
+    *{ margin:0; padding:0;}
+    html, body{ width:100%; height:100%;}
+    #app { width:750px; height:10000px; background-color: wheat; margin:0 auto;}
+  </style>
+</head>
+<body>
+<div id="app">
+
+</div>
+<script>
+  function test() {
+    console.log('hello')
+  }
+/*防抖*/
+
+  function avoidShak(func, time) {
+    var timer
+    return function (...args) {
+      clearTimeout(timer)
+      var that = this
+      timer = setTimeout(function(){
+        func.apply(that, args)
+      }, time)
+    }
+  }
+  window.onscroll = avoidShak(test, 500)
+
+/*节流*/
+
+function ttrottle(func, time) {
+  let lastTime = new Date().getTime()
+  let nowTime
+  return function (...args) {
+    nowTime = new Date().getTime()
+    if (nowTime - lastTime < time) return
+    lastTime = nowTime
+    let that = this
+    func.apply(that,  args)
+  }
+}
+
+window.onscroll = ttrottle(test, 500)
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="outer">
+   <div class="inner">ddd</div>
+</div>
+<script>
+  var outer = document.querySelector('.outer');
+  var inner = document.querySelector('.inner');
+
+  // 给 outer 添加一个观察者
+  new MutationObserver(function() {
+    console.log('mutate');
+  }).observe(outer, {
+    attributes: true
+  });
+
+  // click 回调函数
+  function onClick(e) {
+    console.log(e,'click');
+
+    setTimeout(function() {
+      console.log('timeout');
+    }, 0);
+
+    Promise.resolve().then(function() {
+      console.log('promise');
+    });
+
+    outer.setAttribute('data-random', Math.random());
+  }
+
+  inner.addEventListener('click', onClick);
+  outer.addEventListener('click', onClick.bind(null, 1));
+
+  inner.click()
+</script>
+</body>
+</html>
