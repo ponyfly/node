@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    *{ margin:0; padding:0;}
+    html, body{ width:100%; height:100%;}
+    #app{ width:100%; height:100%;}
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <label>
+    姓名：
+    <input id="username" type="text">
+  </label>
+  <label>
+    密码：
+    <input id="password" type="password">
+  </label>
+  <button id="sign">登陆</button>
+</div>
+<script>
+  var sign = document.getElementById('sign')
+  sign.addEventListener('click', function () {
+    var domName = document.getElementById('username')
+    var domPassword = document.getElementById('password')
+    if(!domName.value) {
+      alert('请输入名字')
+      return
+    }
+    if(!domPassword.value) {
+      alert('请输入密码')
+      return
+    }
+    var user = {
+      username: domName.value,
+      password: domPassword.value
+    }
+    fetch('/signin', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+      .then(function (res) {
+        return res.json()
+      })
+      .then(function (res) {
+        if (res.errCode === 0) {
+          alert(res.errMessage)
+        } else {
+          alert(res.errMessage)
+        }
+      })
+  })
+</script>
+</body>
+</html>
