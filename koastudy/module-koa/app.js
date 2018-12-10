@@ -13,8 +13,8 @@ app.use(home)
 app.use(bodyParse())
 app.use(controller())
 
-app.set('port', 3006)
+app.set('port', 3036)
 
-app.listen(app.get('port'), () => {
-  console.log('app lister at port' + 3006)
+app.listen(3036, () => {
+  console.log('app lister at port 3036')
 })
