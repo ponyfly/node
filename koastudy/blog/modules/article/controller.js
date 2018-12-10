@@ -4,18 +4,18 @@ const util = require('../../util/util')
 const ArticleModel = mongoose.model('article')
 
 function add(req, res) {
-  const article = new ArticleModel(Object.assign({ articleId: util.randomId()}, req.body))
+  const article = new ArticleModel(Object.assign({ articleId: util.randomId() }, req.body))
   article.save((err, result) => {
-    if(err) {
+    if (err) {
       console.log(err.errors)
       return res.status(400).send({
-        errMsg: err
+        errMsg: err,
       })
     }
     res.json({
       errCode: 0,
       errMsg: '新增成功',
-      articleId: result.articleId
+      articleId: result.articleId,
     })
   })
 }
@@ -24,16 +24,16 @@ function remove(req, res) {
   const { articleId } = req.body
   if (!articleId) {
     return res.status(400).send({
-      errMsg: '请上传id'
+      errMsg: '请上传id',
     })
   }
   ArticleModel.deleteOne({ articleId }, (err, result) => {
-    if(err) {
+    if (err) {
       return res.status(400).send({
-        errMsg: '删除失败'
+        errMsg: '删除失败',
       })
     }
-    if(result.n) {
+    if (result.n) {
       res.json({
         errCode: 0,
         errMsg: '删除成功',
@@ -41,7 +41,7 @@ function remove(req, res) {
     } else {
       res.json({
         errCode: -1,
-        errMsg: '文章不存在'
+        errMsg: '文章不存在',
       })
     }
   })
@@ -51,18 +51,19 @@ function update(req, res) {
   const { articleId } = req.body
   if (!articleId) {
     return res.status(400).send({
-      errMsg: '请上传id'
+      errMsg: '请上传id',
     })
   }
   delete req.body.articleId
-  ArticleModel.updateOne({ articleId }, req.body, (err, result) => {
-    if(err) {
+  const opts = { runValidators: true }
+  ArticleModel.updateOne({ articleId }, req.body, opts, (err, result) => {
+    if (err) {
       return res.status(400).send({
-        errMsg: '更新失败'
+        errMsg: err,
       })
     }
     console.log(result)
-    if(result.nModified) {
+    if (result.nModified) {
       res.json({
         errCode: 0,
         errMsg: '更新成功',
@@ -80,19 +81,19 @@ function find(req, res) {
   const { articleId } = req.query
   if (!articleId) {
     return res.status(400).send({
-      errMsg: '请上传id'
+      errMsg: '请上传id',
     })
   }
   ArticleModel.findOne({ articleId }, (err, result) => {
-    if(err) {
+    if (err) {
       return res.status(400).send({
-        errMsg: '查找失败'
+        errMsg: '查找失败',
       })
     }
     res.json({
       errCode: 0,
       errMsg: '查找成功',
-      data: result
+      data: result,
     })
   })
 }

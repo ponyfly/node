@@ -7,7 +7,7 @@ const options = {
   // useCreateIndex: true,
   autoIndex: false,
   reconnectTries: 30,
-  reconnectInterval: 500
+  reconnectInterval: 500,
 }
 
 function start(succ) {
@@ -22,5 +22,5 @@ function start(succ) {
 }
 
 module.exports = {
-  start
+  start,
 }
