@@ -1,7 +1,7 @@
 const fs = require('fs')
 const {promisify} = require('util')
 const co = require('co')
-//第一种  回调函数
+// 第一种  回调函数
 const readFile = (path, cb) => {
   fs.readFile(path, (err, data) => {
     if(err) cb(err)
@@ -10,11 +10,11 @@ const readFile = (path, cb) => {
 }
 
 readFile('./data.json', (err, data) => {
-  if(err) return
+  if (err) return
   data = JSON.parse(data)
   console.log(data.name)
 })
-//第二种 promise
+// 第二种 promise
 const readFilePromise = (path) => {
   return new Promise((resolve, reject) => {
     fs.readFile(path, (err, data) => {
@@ -37,17 +37,17 @@ const readFilePromisify = (path) => {
 readFilePromisify('./data.json')
 .then(res=>console.log(JSON.parse(res).name))
 
-//第三种 co+promsie+generator
+// 第三种 co+promsie+generator
 
-co(function *() {
+co(function* () {
   let data = yield promisify(fs.readFile)('./data.json')
   return JSON.parse(data).name
 })
-  .then(res => {
+  .then((res) => {
     console.log(res)
   })
 
-const wrapFile = co.wrap(function *(path) {
+const wrapFile = co.wrap(function* (path) {
   let data = yield promisify(fs.readFile)(path)
   return data
 })

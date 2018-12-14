@@ -62,7 +62,6 @@ function update(req, res) {
         errMsg: err,
       })
     }
-    console.log(result)
     if (result.nModified) {
       res.json({
         errCode: 0,

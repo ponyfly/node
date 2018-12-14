@@ -1,0 +1,40 @@
+async function async1() {
+  console.log('async1 start')
+  await async2()
+  console.log('async1 end')
+}
+
+async function async2() {
+  console.log('async2')
+}
+
+console.log('script start')
+
+setTimeout(() => {
+  console.log('setTimeout')
+})
+
+async1()
+
+new Promise((resolve, reject) => {
+  console.log('promise1')
+  resolve()
+}).then(() => {
+  console.log('promise2')
+})
+
+console.log('script end')
+
+/*
+micro resolve(undefined) promise(fullfilled)
+macro setTimeout
+
+script start
+async1 start
+async2
+promise1
+script end
+async1 end
+promise2
+setTimeout
+* */

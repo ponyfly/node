@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const validation = require('../../util/validation')
+const plugin = require('../../util/plugin') // 插件
+
 
 const Schema = mongoose.Schema
 // 默认情况下，验证器都是只有save操作才会触发 但是在Mongoose 4.x后，我们也可以开启update()和findoneandupdate()的验证器，只需将runValidators设为true(默认是false)
@@ -13,6 +15,9 @@ const ArticleSchema = new Schema({
   },
   content: { type: String },
   author: {
+    type: String,
+  },
+  by: {
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
@@ -42,5 +47,6 @@ const ArticleSchema = new Schema({
   },
   modifyOn: { type: Date, default: Date.now() },
 })
+ArticleSchema.plugin(plugin.lastModified, { index: true }) // 插件
 
 mongoose.model('article', ArticleSchema)

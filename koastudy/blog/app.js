@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const db = require('./db/connect')
 require('./modules/article/model')
 require('./modules/user/model')
+require('./modules/city/model')
 const articleRouter = require('./modules/article/route')
 const userRouter = require('./modules/user/route')
 

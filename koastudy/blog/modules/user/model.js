@@ -15,8 +15,8 @@ const UserModel = mongoose.model('user', UsersSchema)
 
 const address = UsersSchema.virtual('address.full')
 
-address.get(function () {
-  return this.address.city + ' ' + this.address.street;
+address.get(function() {
+  return `${this.address.city} ${this.address.street}`;
 })
 address.set(function (v) {
   const split = v.split(' ')
