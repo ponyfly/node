@@ -24,14 +24,60 @@ function getCityGtThousand() {
 function getItPerson() {
   CityModel
     .aggregate()
-    .unwind('industry')
+    .unwind('$industry')
     .match({ 'industry.name': 'IT' })
-    .group({ _id: '$province', itTotal: { $sum: '$industry.person' }, city: { $push: '$city' } })
-    .match({ itTotal: { $gt: 400 } })
-    .exec(function (err, res) {
-      console.log(res)
+    .group({ _id: '$province', itTotal: { $sum: '$industry.person' }, city: { $push: '$city'} })
+    .match({ itTotal: { $gt: 400} })
+    .exec(function(err, result) {
+      console.log(result)
     })
 }
+
+function sortPerson() {
+  CityModel
+    .aggregate()
+    .sort({ 'person': 1 })
+    .project( {
+      _id: 0,
+      province: 1,
+      person: 1,
+      city: 1,
+    })
+    .exec(function(err, result) {
+      console.log(result)
+    })
+}
+
+function limitSkip() {
+  // 随机返回10条，从第三条数据开始，返回一条数据
+  CityModel
+    .aggregate()
+    .sample(10)
+    .skip(2)
+    .limit(1)
+}
+
+function lookUp() {
+  // 联表
+  UserModel
+    .aggregate()
+    .lookup({
+      from: 'articles',
+      localFiled: 'name',
+      foreignFiled: 'author',
+      as: 'userArticle',
+    })
+    .project({
+      _id: 0,
+      name: 1,
+      'userArticle.title': 1,
+      'userArticle.author': 1,
+    })
+    .match({
+      name: '张三'
+    })
+}
+
 
 // getCityGtThousand()
 getItPerson()
