@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs')
 const path = require('path')
 
+const htmlDir = 'shareDailySign'
 let browser = null
 
 const getFileName = (filePath) => {
@@ -12,7 +13,7 @@ const getFileName = (filePath) => {
 }
 
 const initAllPage = () => {
-	const htmls = getFileName(path.resolve(__dirname, 'shareDailySign'))
+	const htmls = getFileName(path.resolve(__dirname, htmlDir))
 	const pages = htmls.map((html) => {
 		return async () => {
 			const page = await browser.newPage()
@@ -20,11 +21,13 @@ const initAllPage = () => {
 				width: 1024,
 				height: 1600,
 			})
-			await page.goto(path.resolve(__dirname, html))
+			console.log(path.resolve(__dirname, htmlDir, html))
+			await page.goto(path.resolve(__dirname, htmlDir, html))
 			// 获取pic元素
 			const pic = await page.$('#pic')
+			console.log(html.slice(0, -5))
 			await pic.screenshot({
-				path: `./imgs/${html.slice(0, -5)}.png`,
+				path: path.resolve(__dirname, 'imgs', `${html.slice(0, -5)}.png`),
 			})
 		}
 	})
@@ -74,9 +77,9 @@ const creat3 = async () => {
 }
 
 const start = async () => {
-	const pages = initAllPage()
+	let pages = initAllPage()
 	browser = await puppeteer.launch()
-	pages.map(page => page())
+	pages = pages.map(page => page())
 	await Promise.all(pages)
 	await browser.close()
 	console.timeEnd('html2img')
