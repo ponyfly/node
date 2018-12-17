@@ -8,7 +8,7 @@ const CitySchema = new Schema({
   person: Number,
   industry: Array,
 })
-
+const UserModel = mongoose.model('user')
 const CityModel = mongoose.model('city', CitySchema)
 
 function getCityGtThousand() {
@@ -37,7 +37,7 @@ function sortPerson() {
   CityModel
     .aggregate()
     .sort({ 'person': 1 })
-    .project( {
+    .project({
       _id: 0,
       province: 1,
       person: 1,
@@ -54,7 +54,7 @@ function limitSkip() {
     .aggregate()
     .sample(10)
     .skip(2)
-    .limit(1)
+    .limit(6)
 }
 
 function lookUp() {
@@ -73,9 +73,7 @@ function lookUp() {
       'userArticle.title': 1,
       'userArticle.author': 1,
     })
-    .match({
-      name: '张三'
-    })
+    .match({ name: '张三' })
 }
 
 
