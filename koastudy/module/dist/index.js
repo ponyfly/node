@@ -99,4 +99,4 @@ function say() {
 var Person = function Person() {
   (0, _classCallCheck3.default)(this, Person);
 };
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=peppeteer.js.map
