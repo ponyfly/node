@@ -8,7 +8,7 @@ const SHELF_URL = 'http://www.ituring.com.cn/user/shelf'
 const LOGIN_URL = `http://account.ituring.com.cn/log-in?returnUrl=${encodeURIComponent(SHELF_URL)}`
 
 const start = async (userName, password, saveDir = './books/') => {
-	const browser = await puppeteer.launch({ headless: true })
+	const browser = await puppeteer.launch({ headless: false })
 	const page = await browser.newPage()
 	const viewport = {
 		width: 1376,

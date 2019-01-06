@@ -15,7 +15,7 @@ const start = async (url, grabPage) => {
   const browser = await puppeteer.launch({
 	  args: ['--disable-web-security'],
 	  headless: false,
-	  devtools: true,
+	  // devtools: true,
   })
 	const page = await browser.newPage()
 	await page.setUserAgent(userAgent)
@@ -32,7 +32,8 @@ const start = async (url, grabPage) => {
 				const title = ele.querySelector('p.txt').firstChild.nodeValue.replace('\n', '').trim()
 				let actionData = ele.querySelector('.thumbnail>a').getAttribute('action-data')
 				actionData = decodeURIComponent(actionData)
-				const src = `https:${actionData.match(/video_src.+(?=&cover_img)/)[0].replace('video_src=', '')}`
+				// const src = `https:${actionData.match(/video_src.+(?=&cover_img)/)[0].replace('video_src=', '')}`
+				const src = `https:${actionData.match(/video_src=.+\,video/)[0].replace('video_src=', '')}`
 				return {
 					nickName,
 					title,
@@ -40,15 +41,15 @@ const start = async (url, grabPage) => {
 				}
 			})
 		})
-		// const writeStream = fs.createWriteStream(path.resolve(__dirname, `./joke${hasGrabPage + 1}.json`))
-		// writeStream.write(JSON.stringify(jokes, undefined, 2), 'utf-8')
-		// writeStream.end()
-		// jokesTotal = jokesTotal.concat(jokes)
-		// hasGrabPage++
+		const writeStream = fs.createWriteStream(path.resolve(__dirname, `./joke${hasGrabPage + 1}.json`))
+		writeStream.write(JSON.stringify(jokes, undefined, 2), 'utf-8')
+		writeStream.end()
+		jokesTotal = jokesTotal.concat(jokes)
+		hasGrabPage++
 		if (grabPage === 1 || hasGrabPage === grabPage) {
 			await page.close()
 			await browser.close()
-			// return jokesTotal
+			return jokesTotal
 		}
 		await page.click('.m-page .next')
 		await go()

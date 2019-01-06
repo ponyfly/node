@@ -25,3 +25,7 @@ const path = require('path');
 
 // 1629 1610 1654 1940 1666 1829 1805 1657 1901 1844
 // average 1748 , faster Than phantomjs:700ms
+
+//opentime
+//puppeteer 286 319 257 257 241 241 245 270  average 264
+//phantom (1368+1359+1349+1352+1344+1358+1351+1354) average 1354

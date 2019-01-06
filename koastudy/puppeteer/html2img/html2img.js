@@ -4,41 +4,38 @@ const fs = require('fs')
 const path = require('path')
 
 const htmlDir = 'shareDailySign'
+const viewport = {
+  width: 1024,
+  height: 1600,
+}
 let browser = null
 
 const getFileName = (filePath) => {
 	const files = fs.readdirSync(filePath)
-	htmlFiles = files.filter(file => file.endsWith('.html'))
-	return htmlFiles
+  return files.filter(file => file.endsWith('.html'))
 }
 
-const initAllPage = () => {
+const picScreenshot = () => {
 	const htmls = getFileName(path.resolve(__dirname, htmlDir))
-	const pages = htmls.map((html) => {
-		return async () => {
-			const page = await browser.newPage()
-			page.setViewport({
-				width: 1024,
-				height: 1600,
-			})
-			await page.goto(path.resolve(__dirname, htmlDir, html))
-			// 获取pic元素
-			const pic = await page.$('#pic')
-			await pic.screenshot({
-				path: path.resolve(__dirname, 'imgs', `${html.slice(0, -5)}.png`),
-			})
-		}
-	})
-	return pages
+  return htmls.map(async (html) => {
+    const page = await browser.newPage()
+    await page.setViewport(viewport)
+    await page.goto(path.resolve(__dirname, htmlDir, html))
+    // 获取pic元素
+    const pic = await page.$('#pic')
+    await pic.screenshot({
+      path: path.resolve(__dirname, 'imgs', `${html.slice(0, -5)}.png`),
+    })
+    await page.close()
+  })
 }
 
 const start = async () => {
-	let pages = initAllPage()
-	browser = await puppeteer.launch()
-	pages = pages.map(page => page())
-	await Promise.all(pages)
+	browser = await puppeteer.launch({headless: true})
+	await Promise.all(picScreenshot())
 	await browser.close()
 	console.timeEnd('html2img')
 }
 
 start()
+// 1562ms
